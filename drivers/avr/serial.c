@@ -30,7 +30,7 @@
 #        endif
 #    endif
 // PD0..PD3, common config
-#    if SOFT_SERIAL_PIN >= D0 && SOFT_SERIAL_PIN <= D3
+#    if SOFT_SERIAL_PIN >= D0 && SOFT_SERIAL_PIN <= D7
 #        if SOFT_SERIAL_PIN == D0
 #            define EIMSK_BIT _BV(INT0)
 #            define EICRx_BIT (~(_BV(ISC00) | _BV(ISC01)))
@@ -48,49 +48,57 @@
 #            define EICRx_BIT (~(_BV(ISC30) | _BV(ISC31)))
 #            define SERIAL_PIN_INTERRUPT INT3_vect
 #        endif
+#        if defined(__AVR_ATmega16U2__) || defined(__AVR_ATmega32U2__)
+#            if SOFT_SERIAL_PIN == D4
+#                define EIMSK_BIT _BV(INT5)
+#                define EICRx_BIT (~(_BV(ISC50) | _BV(ISC51)))
+#                define SERIAL_PIN_INTERRUPT INT5_vect
+#            elif SOFT_SERIAL_PIN == D6
+#                define EIMSK_BIT _BV(INT6)
+#                define EICRx_BIT (~(_BV(ISC60) | _BV(ISC61)))
+#                define SERIAL_PIN_INTERRUPT INT6_vect
+#            elif SOFT_SERIAL_PIN == D7
+#                define EIMSK_BIT _BV(INT7)
+#                define EICRx_BIT (~(_BV(ISC70) | _BV(ISC71)))
+#                define SERIAL_PIN_INTERRUPT INT7_vect
+#            endif
+#        endif
 #    endif
 
-// ATmegaxxU2 specific config
+//#    if SOFT_SERIAL_PIN >= C7 && SOFT_SERIAL_PIN <= C7
 #    if defined(__AVR_ATmega16U2__) || defined(__AVR_ATmega32U2__)
-// PD4(INT5), PD6(INT6), PD7(INT7), PC7(INT4)
-#        if SOFT_SERIAL_PIN == D4
-#            define EIMSK_BIT _BV(INT5)
-#            define EICRx_BIT (~(_BV(ISC50) | _BV(ISC51)))
-#            define SERIAL_PIN_INTERRUPT INT5_vect
-#        elif SOFT_SERIAL_PIN == D6
-#            define EIMSK_BIT _BV(INT6)
-#            define EICRx_BIT (~(_BV(ISC60) | _BV(ISC61)))
-#            define SERIAL_PIN_INTERRUPT INT6_vect
-#        elif SOFT_SERIAL_PIN == D7
-#            define EIMSK_BIT _BV(INT7)
-#            define EICRx_BIT (~(_BV(ISC70) | _BV(ISC71)))
-#            define SERIAL_PIN_INTERRUPT INT7_vect
-#        elif SOFT_SERIAL_PIN == C7
+#        if SOFT_SERIAL_PIN == C7
 #            define EIMSK_BIT _BV(INT4)
 #            define EICRx_BIT (~(_BV(ISC40) | _BV(ISC41)))
 #            define SERIAL_PIN_INTERRUPT INT4_vect
 #        endif
 #    endif
+//#    endif
 
-#    if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB647__) || defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__)
+#    if SOFT_SERIAL_PIN >= E4 && SOFT_SERIAL_PIN <= E7
 // PE4..PE7(INT4..INT7)
-#        if SOFT_SERIAL_PIN == E4
-#            define EIMSK_BIT _BV(INT4)
-#            define EICRx_BIT (~(_BV(ISC40) | _BV(ISC41)))
-#            define SERIAL_PIN_INTERRUPT INT4_vect
-#        elif SOFT_SERIAL_PIN == E5
-#            define EIMSK_BIT _BV(INT5)
-#            define EICRx_BIT (~(_BV(ISC50) | _BV(ISC51)))
-#            define SERIAL_PIN_INTERRUPT INT5_vect
-#        elif SOFT_SERIAL_PIN == E6
-#            define EIMSK_BIT _BV(INT6)
-#            define EICRx_BIT (~(_BV(ISC60) | _BV(ISC61)))
-#            define SERIAL_PIN_INTERRUPT INT6_vect
-#        elif SOFT_SERIAL_PIN == E7
-#            define EIMSK_BIT _BV(INT7)
-#            define EICRx_BIT (~(_BV(ISC70) | _BV(ISC71)))
-#            define SERIAL_PIN_INTERRUPT INT7_vect
+#        if defined(__AVR_ATmega16U4__) || defined(__AVR_ATmega32U4__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB647__) || defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__)
+#            if SOFT_SERIAL_PIN == E6
+#                define EIMSK_BIT _BV(INT6)
+#                define EICRx_BIT (~(_BV(ISC60) | _BV(ISC61)))
+#                define SERIAL_PIN_INTERRUPT INT6_vect
+#            endif
 #        endif
+#        if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB647__) || defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__)
+#            if SOFT_SERIAL_PIN == E4
+#                define EIMSK_BIT _BV(INT4)
+#                define EICRx_BIT (~(_BV(ISC40) | _BV(ISC41)))
+#                define SERIAL_PIN_INTERRUPT INT4_vect
+#            elif SOFT_SERIAL_PIN == E5
+#                define EIMSK_BIT _BV(INT5)
+#                define EICRx_BIT (~(_BV(ISC50) | _BV(ISC51)))
+#                define SERIAL_PIN_INTERRUPT INT5_vect
+#            elif SOFT_SERIAL_PIN == E7
+#                define EIMSK_BIT _BV(INT7)
+#                define EICRx_BIT (~(_BV(ISC70) | _BV(ISC71)))
+#                define SERIAL_PIN_INTERRUPT INT7_vect
+#            endif
+#
 #    endif
 
 #    ifndef SERIAL_PIN_INTERRUPT
